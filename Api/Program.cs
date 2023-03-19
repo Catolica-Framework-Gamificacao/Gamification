@@ -1,5 +1,7 @@
 ﻿
 using System.Text;
+using Api.Repositories;
+using Api.Repositories.Interfaces;
 using Api.Services.Auth;
 using Api.Services.Student;
 using Api.Services.Teacher;
@@ -66,8 +68,19 @@ Console.WriteLine("Starting Gamification API");
 app.Run();
 static void ConfigureServiceInjection(IServiceCollection services)
 {
-    services.AddTransient<IAuthService, AuthService>();
+    #region DATABASE
     services.AddTransient<IGamificationContext, GamificationContext>();
+    #endregion
+
+    #region SERVICES
+    services.AddTransient<IAuthService, AuthService>();
     services.AddTransient<IStudentService, StudentService>();
     services.AddTransient<ITeacherService, TeacherService>();
+    #endregion
+    
+    
+    #region REPOSITORIES
+    services.AddTransient<IStudentRepository, StudentRepository>();
+    services.AddTransient<ITeacherRepository, TeacherRepository>();
+    #endregion
 }

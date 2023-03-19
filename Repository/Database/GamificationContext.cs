@@ -9,10 +9,18 @@ public class GamificationContext : DbContext, IGamificationContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        Console.WriteLine(AppConfiguration.DatabaseConnectionString);
         optionsBuilder
             .UseNpgsql(AppConfiguration.DatabaseConnectionString,
                 options => options.SetPostgresVersion(AppConfiguration.DatabaseMajorVersion,
                     AppConfiguration.DatabaseMinorVersion));
+    }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ApplicationUser>()
+            .HasIndex(user => new { user.Email, user.Password })
+            .IsUnique();
     }
     
     public DatabaseFacade Database => base.Database;

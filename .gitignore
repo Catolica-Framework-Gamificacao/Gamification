@@ -4,3 +4,5 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 .idea/.idea.Gamification/.idea/sonarlint/issuestore/5/7/57c7ed07e9354a7e4d6da14325f1150f16e7889a
+Repository/appsettings.json
+Api/appsettings.json

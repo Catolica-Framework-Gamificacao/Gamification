@@ -21,7 +21,7 @@ public static class AppConfiguration
 
     public static IConfigurationSection AppSettings => Config.GetSection("appsettings");
 
-    #region "Database configuration'
+    #region Database configuration
     public static string DatabaseConnectionString => AppSettings["Database:ConnectionString"];
     public static int DatabaseMajorVersion => int.Parse(AppSettings["Database:MajorVersion"]);
     public static int DatabaseMinorVersion => int.Parse(AppSettings["Database:MinorVersion"]);
