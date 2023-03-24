@@ -7,7 +7,7 @@ namespace Api.Repositories;
 
 public class ApplicationUserRepository : IApplicationUserRepository
 {
-    private IGamificationContext Context { get; set; }
+    public IGamificationContext Context { get; set; }
 
     public ApplicationUserRepository(IGamificationContext context)
     {
@@ -16,11 +16,26 @@ public class ApplicationUserRepository : IApplicationUserRepository
 
     public void Save(UserModel user)
     {
-        throw new NotImplementedException();
+        var applicationUser = new ApplicationUser
+        {
+            Email = user.Email,
+            Name = user.Name,
+            Password = user.Password,
+            Type = user.Type,
+            UpdateDate = DateTime.UtcNow
+        };
+
+        Context.Users.Add(applicationUser);
+        Context.SaveChanges();
     }
 
     public Task<List<ApplicationUser>> GetAll()
     {
         return Task.FromResult(Context.Users.ToList());
+    }
+
+    public ApplicationUser? GetByKey(string email, string password)
+    {
+        return Context.Users.Any() ? Context.Users.SingleOrDefault(user => user.Email.Equals(email) && user.Password.Equals(password)) : null;
     }
 }

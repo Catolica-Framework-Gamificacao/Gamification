@@ -7,4 +7,6 @@ public interface IApplicationUserRepository
 {
     void Save(UserModel user);
     Task<List<ApplicationUser>> GetAll();
+
+    ApplicationUser? GetByKey(string email, string password);
 }

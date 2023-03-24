@@ -10,11 +10,11 @@ namespace Api.Controllers;
 [Route("teacher")]
 public class TeacherController : ControllerBase
 {
-    private readonly ITeacherService Service;
+    private readonly ITeacherService _service;
 
     public TeacherController(ITeacherService teacherService)
     {
-        this.Service = teacherService;
+        this._service = teacherService;
     }
 
     [HttpGet]

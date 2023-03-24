@@ -5,15 +5,15 @@ namespace Api.Services.Student;
 
 public class StudentService : IStudentService
 {
-    private readonly IStudentRepository Repository;
+    private readonly IStudentRepository _repository;
 
     public StudentService(IStudentRepository repository)
     {
-        Repository = repository;
+        _repository = repository;
     }
     public List<StudentModel> RetriveAll()
     {
-        var students = this.Repository.GetAll();
+        var students = this._repository.GetAll();
         return students;
     }
 }

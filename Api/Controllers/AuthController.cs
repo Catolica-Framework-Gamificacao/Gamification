@@ -1,8 +1,9 @@
-﻿using Api.Models.Login;
+﻿using Api.Models.Auth;
+using Api.Models.Login;
 using Api.Models.Register;
 using Api.Services.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Repository.Models.Database.User;
 
 namespace Api.Controllers;
 
@@ -10,34 +11,36 @@ namespace Api.Controllers;
 [Route("auth")]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthService Service;
+    private readonly IAuthService _service;
 
     public AuthController(IAuthService authService)
     {
-        this.Service = authService;
+        this._service = authService;
     }
 
+    [AllowAnonymous]
     [HttpPost]
     [Route("login")]
-    public ActionResult<ApplicationUser> Login([FromBody] Credential credential)
+    public ActionResult<AuthenticationResponse> Login([FromBody] Credential credential)
     {
-        var response = this.Service.Authenticate(credential);
+        var response = _service.Authenticate(credential);
 
         if (response.Success)
         {
-            return Ok(response.User);
+            return Ok(response);
         }
         else
         {
-            return Unauthorized(response.Error);
+            return Unauthorized(response);
         }
     }
 
+    [AllowAnonymous]
     [HttpPost]
     [Route("register")]
-    public ActionResult<string> Register([FromBody] Formulary formulary)
+    public ActionResult<RegisterResponse> Register([FromBody] Formulary formulary)
     {
-        var response = this.Service.Register(formulary);
+        var response = _service.Register(formulary);
 
         if (response.Success)
         {
@@ -45,7 +48,7 @@ public class AuthController : ControllerBase
         }
         else
         {
-            return BadRequest(response.Error);
+            return BadRequest(response);
         }
     }
 }

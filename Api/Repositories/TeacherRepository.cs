@@ -6,15 +6,15 @@ namespace Api.Repositories;
 
 public class TeacherRepository : ITeacherRepository
 {
-    private readonly IGamificationContext Context;
+    private readonly IGamificationContext _context;
 
     public TeacherRepository(IGamificationContext context)
     {
-        Context = context;
+        _context = context;
     }
     
     public List<Teacher> GetAll()
     {
-        return Context.Teachers.ToList();
+        return _context.Teachers.ToList();
     }
 }

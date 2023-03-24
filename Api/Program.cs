@@ -37,6 +37,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppConfiguration.JwtKey)),
             ValidateIssuer = false,
             ValidateAudience = false,
+            ValidateLifetime = true
         };
     });
 builder.Services.AddCors(options =>
@@ -58,7 +59,10 @@ app.UseRouting();
 app.UseCors(gamificationOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers().RequireAuthorization();
+});
 using (var context = new GamificationContext())
 {
     context.Database.GetService<IMigrator>().Migrate();
@@ -80,6 +84,8 @@ static void ConfigureServiceInjection(IServiceCollection services)
     
     
     #region REPOSITORIES
+
+    services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
     services.AddTransient<IStudentRepository, StudentRepository>();
     services.AddTransient<ITeacherRepository, TeacherRepository>();
     #endregion

@@ -7,22 +7,39 @@ namespace Repository.Database;
 
 public class GamificationContext : DbContext, IGamificationContext
 {
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
-        Console.WriteLine(AppConfiguration.DatabaseConnectionString);
-        optionsBuilder
+        builder
             .UseNpgsql(AppConfiguration.DatabaseConnectionString,
                 options => options.SetPostgresVersion(AppConfiguration.DatabaseMajorVersion,
                     AppConfiguration.DatabaseMinorVersion));
     }
     
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        modelBuilder.Entity<ApplicationUser>()
+        ConfigureApplicationUser(builder);
+        ConfigureStudent(builder);
+        ConfigureTeacher(builder);
+    }
+
+    private static void ConfigureTeacher(ModelBuilder builder)
+    {
+        builder.Entity<Teacher>().HasNoKey();
+    }
+
+    private static void ConfigureStudent(ModelBuilder builder)
+    {
+        builder.Entity<Student>().Property(student => student.Ra).IsRequired();
+        builder.Entity<Student>().HasIndex(student => student.Ra).IsUnique();
+    }
+
+    private static void ConfigureApplicationUser(ModelBuilder builder)
+    {
+        builder.Entity<ApplicationUser>()
             .HasIndex(user => new { user.Email, user.Password })
             .IsUnique();
     }
-    
+
     public DatabaseFacade Database => base.Database;
     public DbSet<ApplicationUser> Users { get; set; }
     public DbSet<Student> Students { get; set; }

@@ -1,9 +1,11 @@
-﻿namespace Api.Services.Teacher;
+﻿using Api.Models;
+
+namespace Api.Services.Teacher;
 
 public class TeacherService : ITeacherService
 {
-    public List<Repository.Models.Database.Teacher> RetriveAll()
+    public List<TeacherModel> RetrieveAll()
     {
-        return new List<Repository.Models.Database.Teacher>();
+        return new List<TeacherModel>();
     }
 }

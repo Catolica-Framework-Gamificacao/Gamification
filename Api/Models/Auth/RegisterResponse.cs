@@ -6,7 +6,7 @@ public class RegisterResponse
 {
     public bool Success { get; set; }
     
-    public ApplicationUser User { get; set; }
+    public UserModel? User { get; set; }
 
-    public string Error { get; set; }
+    public string? Message { get; set; }
 }

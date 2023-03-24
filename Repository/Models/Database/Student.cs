@@ -1,23 +1,20 @@
 ﻿using Repository.Models.Database.User;
-using Repository.Models.Enums;
 
 namespace Repository.Models.Database;
 
-public class Student : ApplicationUser
+public class Student : BaseEntity
 {
     public Student() {}
-    public Student(string ra, string name, string email, string password, UserType type, List<Subject> subjects, bool showNameOnRanking)
+    public Student(string ra, ApplicationUser user, List<Subject> subjects, bool showNameOnRanking)
     {
         this.Ra = ra;
-        this.Type = UserType.Student;
-        this.Name = name;
-        this.Email = email;
-        this.Password = password;
+        this.User = user;
         this.Subjects = subjects;
         this.ShowNameOnRanking = showNameOnRanking;
-        this.Type = type;
     }
     public string Ra { get; }
-    public List<Subject> Subjects { get; }
+    
+    public ApplicationUser User { get; set; }
+    public List<Subject>? Subjects { get; }
     public bool ShowNameOnRanking { get; set; }
 }

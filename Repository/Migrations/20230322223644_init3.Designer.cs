@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Repository.Database;
@@ -11,9 +12,10 @@ using Repository.Database;
 namespace Repository.Migrations
 {
     [DbContext(typeof(GamificationContext))]
-    partial class GamificationContextModelSnapshot : ModelSnapshot
+    [Migration("20230322223644_init3")]
+    partial class init3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,42 +23,6 @@ namespace Repository.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Repository.Models.Database.Student", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime?>("InsertDate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Ra")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("ShowNameOnRanking")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Ra")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Students");
-                });
 
             modelBuilder.Entity("Repository.Models.Database.Subject", b =>
                 {
@@ -73,6 +39,9 @@ namespace Repository.Migrations
                     b.Property<long?>("StudentId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("TeacherId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime?>("UpdateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
@@ -81,31 +50,9 @@ namespace Repository.Migrations
 
                     b.HasIndex("StudentId");
 
+                    b.HasIndex("TeacherId");
+
                     b.ToTable("Subjects");
-                });
-
-            modelBuilder.Entity("Repository.Models.Database.Teacher", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime?>("InsertDate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("Repository.Models.Database.User.ApplicationUser", b =>
@@ -115,6 +62,10 @@ namespace Repository.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -132,9 +83,6 @@ namespace Repository.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime?>("UpdateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
@@ -145,17 +93,30 @@ namespace Repository.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Repository.Models.Database.Student", b =>
                 {
-                    b.HasOne("Repository.Models.Database.User.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasBaseType("Repository.Models.Database.User.ApplicationUser");
 
-                    b.Navigation("User");
+                    b.Property<bool>("ShowNameOnRanking")
+                        .HasColumnType("boolean");
+
+                    b.Property<long?>("TeacherId")
+                        .HasColumnType("bigint");
+
+                    b.HasIndex("TeacherId");
+
+                    b.HasDiscriminator().HasValue("Student");
+                });
+
+            modelBuilder.Entity("Repository.Models.Database.Teacher", b =>
+                {
+                    b.HasBaseType("Repository.Models.Database.User.ApplicationUser");
+
+                    b.HasDiscriminator().HasValue("Teacher");
                 });
 
             modelBuilder.Entity("Repository.Models.Database.Subject", b =>
@@ -163,21 +124,28 @@ namespace Repository.Migrations
                     b.HasOne("Repository.Models.Database.Student", null)
                         .WithMany("Subjects")
                         .HasForeignKey("StudentId");
-                });
 
-            modelBuilder.Entity("Repository.Models.Database.Teacher", b =>
-                {
-                    b.HasOne("Repository.Models.Database.User.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                    b.HasOne("Repository.Models.Database.Teacher", null)
+                        .WithMany("Subjects")
+                        .HasForeignKey("TeacherId");
                 });
 
             modelBuilder.Entity("Repository.Models.Database.Student", b =>
                 {
+                    b.HasOne("Repository.Models.Database.Teacher", null)
+                        .WithMany("Students")
+                        .HasForeignKey("TeacherId");
+                });
+
+            modelBuilder.Entity("Repository.Models.Database.Student", b =>
+                {
+                    b.Navigation("Subjects");
+                });
+
+            modelBuilder.Entity("Repository.Models.Database.Teacher", b =>
+                {
+                    b.Navigation("Students");
+
                     b.Navigation("Subjects");
                 });
 #pragma warning restore 612, 618
