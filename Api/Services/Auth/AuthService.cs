@@ -21,7 +21,7 @@ public class AuthService : IAuthService
 
     public AuthenticationResponse Authenticate(Credential credential)
     {
-        var user = _repository.GetByKey(credential.Email, credential.Password);
+        var user = _repository.GetByKey(credential.Login, credential.Password);
         var userModel = new UserModel();
         var success = false;
         string? error = null;
@@ -117,7 +117,7 @@ public class AuthService : IAuthService
             {
                 new Claim(ClaimTypes.Name, email)
             }),
-            Expires = DateTime.UtcNow.AddMinutes(60),
+            Expires = DateTime.UtcNow.AddMinutes(Int64.MaxValue),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 

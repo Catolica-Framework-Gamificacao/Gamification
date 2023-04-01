@@ -7,35 +7,36 @@ namespace Api.Repositories;
 
 public class ApplicationUserRepository : IApplicationUserRepository
 {
-    public IGamificationContext Context { get; set; }
+    private IGamificationContext _context { get; set; }
 
     public ApplicationUserRepository(IGamificationContext context)
     {
-        this.Context = context;
+        _context = context;
     }
 
     public void Save(UserModel user)
     {
+        int type = UserTypeModel.GetLogicalByUserType(user.UserType.Type);
         var applicationUser = new ApplicationUser
         {
             Email = user.Email,
             Name = user.Name,
             Password = user.Password,
-            Type = user.Type,
+            Type = type,
             UpdateDate = DateTime.UtcNow
         };
 
-        Context.Users.Add(applicationUser);
-        Context.SaveChanges();
+        _context.Users.Add(applicationUser);
+        _context.SaveChanges();
     }
 
     public Task<List<ApplicationUser>> GetAll()
     {
-        return Task.FromResult(Context.Users.ToList());
+        return Task.FromResult(_context.Users.ToList());
     }
 
     public ApplicationUser? GetByKey(string email, string password)
     {
-        return Context.Users.Any() ? Context.Users.SingleOrDefault(user => user.Email.Equals(email) && user.Password.Equals(password)) : null;
+        return _context.Users.Any() ? _context.Users.SingleOrDefault(user => user.Email.Equals(email) && user.Password.Equals(password)) : null;
     }
 }

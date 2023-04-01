@@ -1,6 +1,5 @@
 ﻿using System.Net.Mail;
 using System.Text.Json.Serialization;
-using Repository.Models.Enums;
 
 namespace Api.Models.Register;
 
@@ -16,7 +15,7 @@ public class Formulary
     public string Password { get; set; }
     
     [JsonPropertyName("type")]
-    public UserType Type { get; set; }
+    public UserTypeModel Type { get; set; }
 
     public bool HasSomeMandatoryFieldEmpty()
     {

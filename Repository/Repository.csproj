@@ -21,4 +21,20 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Models\Enums\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Models\Enums\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Models\Enums\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Models\Enums\**" />
+    </ItemGroup>
+
 </Project>

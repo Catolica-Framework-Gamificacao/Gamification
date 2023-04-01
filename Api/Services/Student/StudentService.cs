@@ -13,7 +13,6 @@ public class StudentService : IStudentService
     }
     public List<StudentModel> RetriveAll()
     {
-        var students = this._repository.GetAll();
-        return students;
+        return _repository.GetAll();
     }
 }

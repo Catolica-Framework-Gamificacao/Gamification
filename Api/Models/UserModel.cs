@@ -1,7 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Api.Models.Register;
 using Repository.Models.Database.User;
-using Repository.Models.Enums;
 
 namespace Api.Models;
 
@@ -11,14 +10,15 @@ public class UserModel : BaseModel
     public string? Name { get; set; }
     
     [JsonPropertyName("email")]
-    public string? Email { get; set; }
+    public string Email { get; set; }
     
     [JsonPropertyName("password")]
-    public string? Password { get; set; }
+    public string Password { get; set; }
     
     [JsonPropertyName("type")]
-    public UserType Type { get; set; }
+    public UserTypeModel UserType { get; set; }
     
+    [JsonPropertyName("token")]
     public string? Token { get; set; }
     
     public static UserModel FromFormulary(Formulary formulary)
@@ -28,12 +28,13 @@ public class UserModel : BaseModel
             Name = formulary.Name,
             Email = formulary.Email,
             Password = formulary.Password,
-            Type = formulary.Type
+            UserType = formulary.Type
         };
     }
 
     public static UserModel LoadData(ApplicationUser user)
     {
+        UserTypeModel type = new(user.Id , user.Type);
         return new UserModel
         {
             Name = user.Name,
@@ -41,7 +42,7 @@ public class UserModel : BaseModel
             Password = user.Password,
             InsertDate = user.InsertDate,
             UpdateDate = user.UpdateDate,
-            Type = user.Type
+            UserType = type
         };
     }
 }

@@ -17,4 +17,6 @@ public class Student : BaseEntity
     public ApplicationUser User { get; set; }
     public List<Subject>? Subjects { get; }
     public bool ShowNameOnRanking { get; set; }
+    
+    public double? points { get; set; }
 }
