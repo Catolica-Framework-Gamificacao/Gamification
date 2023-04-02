@@ -1,10 +1,6 @@
 
 Q
 !Api/Services/Auth/IAuthService.cs,8\e\8ef79c73a99a8ef76446187ab9f3d137dfcb18fe
-E
-Repository/Program.cs,8\7\87d94af7bd15ecdaccf40232f4f0fdf9497d0095
->
-Api/Program.cs,8\f\8f01855ccd40c02f5b70d757c19101d3f0413059
 a
 1Api/Repositories/Interfaces/ITeacherRepository.cs,b\a\ba13eb99bfafaa7b0c795d4a0989edd29d13acc3
 W
@@ -13,26 +9,14 @@ N
 Api/Models/Login/Credential.cs,c\b\cbcaa40a37b855b41c9769bb11d546a165add3fd
 W
 'Api/Services/Subject/ISubjectService.cs,c\2\c26235c90cd2b54cb6cb5a46b135526e2deecb94
-Q
-!Api/Controllers/AuthController.cs,5\2\52f7573335182a0eda1007324ad2df3182941b19
-U
-%Repository/Models/Database/Teacher.cs,5\a\5ae38e7a9089ca032275e8648d11c40e408355ae
-U
-%Repository/Models/Database/Subject.cs,1\d\1d7aeeda81577204e55588ba2c1602b289d83814
 U
 %Repository/Models/Database/Student.cs,e\1\e14c7a9540d89501fcc73ba0a18b48a5890943c4
-Z
-*Repository/Database/GamificationContext.cs,f\2\f261e7a7fc19b2a4f8217a291b3abff99d0fed5f
-X
-(Repository/Models/Database/BaseEntity.cs,f\f\ff85cacfb853be04cd7568fcfc0c050b6d31abbd
 L
 Api/Models/Enums/UserType.cs,c\e\ce3ae56034ce62b4f4f03e16075f9e0b0f86a073
 b
 2Repository/Models/Database/User/ApplicationUser.cs,c\7\c7889e92696a505610bb971c39e4525318270f52
 P
  Api/Models/Register/Formulary.cs,b\7\b73144777475ff3d2dedbefcb43d81451e556087
-K
-Api/Models/UserTypeModel.cs,5\7\57af01494f513a108e87191d5446f9298ffedef9
 W
 'Api/Services/Student/IStudentService.cs,1\1\11ba1846bde54d68211e62a8397afbcd7dd80314
 T

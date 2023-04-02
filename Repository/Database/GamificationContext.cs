@@ -24,7 +24,10 @@ public class GamificationContext : DbContext, IGamificationContext
 
     private static void ConfigureTeacher(ModelBuilder builder)
     {
-        builder.Entity<Teacher>().HasNoKey();
+        builder.Entity<Teacher>()
+            .HasMany(teacher => teacher.Subjects)
+            .WithOne(subject => subject.Teacher)
+            .OnDelete(DeleteBehavior.ClientCascade);
     }
 
     private static void ConfigureStudent(ModelBuilder builder)

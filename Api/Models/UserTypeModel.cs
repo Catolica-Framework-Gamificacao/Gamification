@@ -1,9 +1,16 @@
-﻿using Api.Models.Enums;
+﻿using System.Text.Json.Serialization;
+using Api.Models.Enums;
 
 namespace Api.Models;
 
 public class UserTypeModel
 {
+    [JsonPropertyName("userId")]
+    public long UserId { get; }
+    
+    [JsonPropertyName("userType")]
+    public UserType? Type { get; }
+    
     public UserTypeModel(long id, int type)
     {
         var userType = GetUserTypeByLogical(type);
@@ -40,7 +47,4 @@ public class UserTypeModel
 
         return typeCode;
     }
-
-    public long UserId { get; set; }
-    public UserType? Type { get; set; }
 }
