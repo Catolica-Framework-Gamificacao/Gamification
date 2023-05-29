@@ -6,16 +6,28 @@ namespace Api.Models;
 public class UserTypeModel
 {
     [JsonPropertyName("userId")]
-    public long UserId { get; }
+    public long? UserId { get; set; }
     
     [JsonPropertyName("userType")]
     public UserType? Type { get; }
     
-    public UserTypeModel(long id, int type)
+    public UserTypeModel(long? id, int type)
     {
         var userType = GetUserTypeByLogical(type);
         this.UserId = id;
         this.Type = userType;
+    }
+    
+    public UserTypeModel(long? id, UserType type)
+    {
+        this.UserId = id;
+        this.Type = type;
+    }
+    
+    public UserTypeModel(UserType type)
+    {
+        this.UserId = null;
+        this.Type = type;
     }
 
     private static UserType? GetUserTypeByLogical(int type)

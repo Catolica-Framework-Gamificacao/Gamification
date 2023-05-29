@@ -10,10 +10,10 @@ public class UserModel : BaseModel
     public string? Name { get; set; }
     
     [JsonPropertyName("email")]
-    public string Email { get; set; }
+    public string? Email { get; set; }
     
     [JsonPropertyName("password")]
-    public string Password { get; set; }
+    public string? Password { get; set; }
     
     [JsonPropertyName("type")]
     public UserTypeModel UserType { get; set; }
@@ -28,7 +28,7 @@ public class UserModel : BaseModel
             Name = formulary.Name,
             Email = formulary.Email,
             Password = formulary.Password,
-            UserType = formulary.Type
+            UserType = new UserTypeModel(null, formulary.Type)
         };
     }
 
@@ -43,6 +43,19 @@ public class UserModel : BaseModel
             InsertDate = user.InsertDate,
             UpdateDate = user.UpdateDate,
             UserType = type
+        };
+    }
+
+    public ApplicationUser ToEntity()
+    {
+        var type = UserTypeModel.GetLogicalByUserType(UserType.Type);
+        return new ApplicationUser
+        {
+            Email = Email ?? string.Empty,
+            Name = Name ?? string.Empty,
+            Password = Password ?? string.Empty,
+            Type = type,
+            UpdateDate = DateTime.UtcNow
         };
     }
 }

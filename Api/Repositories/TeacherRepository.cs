@@ -28,4 +28,14 @@ public class TeacherRepository : ITeacherRepository
         if (databaseIsEmpty) return null;
         return _context.Teachers.SingleOrDefault(teacher => teacher.Id == id);
     }
+
+    public Teacher Save(Teacher teacher, IGamificationContext context)
+    {
+        return context.Teachers.Add(teacher).Entity;
+    }
+
+    public Teacher Save(Teacher teacher)
+    {
+        return Save(teacher, _context);
+    }
 }

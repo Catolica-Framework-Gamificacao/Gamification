@@ -1,6 +1,6 @@
-﻿using Api.Models;
-using Api.Repositories.Interfaces;
+﻿using Api.Repositories.Interfaces;
 using Repository.Database;
+using Repository.Models.Database;
 
 namespace Api.Repositories;
 
@@ -13,15 +13,18 @@ public class StudentRepository : IStudentRepository
         _context = context;
     }
     
-    public List<StudentModel> GetAll()
+    public List<Student> GetAll()
     {
-        List<StudentModel> models = new();
-        var students = _context.Students.ToList();
-        foreach (var student in students)
-        {
-            
-        }
+        return _context.Students.ToList();
+    }
 
-        return models;
+    public Student Save(Student student, IGamificationContext context)
+    {
+        return context.Students.Add(student).Entity;
+    }
+
+    public Student Save(Student student)
+    {
+        return Save(student, _context);
     }
 }

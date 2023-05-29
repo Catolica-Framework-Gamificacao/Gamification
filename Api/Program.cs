@@ -4,7 +4,9 @@ using Api.Repositories;
 using Api.Repositories.Interfaces;
 using Api.Services.Auth;
 using Api.Services.Student;
+using Api.Services.Subject;
 using Api.Services.Teacher;
+using Api.Services.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -99,6 +101,8 @@ static void ConfigureServiceInjection(IServiceCollection services)
     services.AddTransient<IAuthService, AuthService>();
     services.AddTransient<IStudentService, StudentService>();
     services.AddTransient<ITeacherService, TeacherService>();
+    services.AddTransient<ISubjectService, SubjectService>();
+    services.AddTransient<IApplicationUserService, ApplicationUserService>();
     #endregion
 
     #region REPOSITORIES
@@ -106,5 +110,6 @@ static void ConfigureServiceInjection(IServiceCollection services)
     services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
     services.AddTransient<IStudentRepository, StudentRepository>();
     services.AddTransient<ITeacherRepository, TeacherRepository>();
+    services.AddTransient<ISubjectRepository, SubjectRepository>();
     #endregion
 }
