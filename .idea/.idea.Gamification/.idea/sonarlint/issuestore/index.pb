@@ -31,10 +31,6 @@ Z
 *Repository/Database/GamificationContext.cs,f\2\f261e7a7fc19b2a4f8217a291b3abff99d0fed5f
 X
 (Repository/Models/Database/BaseEntity.cs,f\f\ff85cacfb853be04cd7568fcfc0c050b6d31abbd
-D
-Api/appsettings.json,e\8\e8ec46db25139aacac5da6821c4c6a8e5fd4c033
-K
-Repository/appsettings.json,5\7\57c7ed07e9354a7e4d6da14325f1150f16e7889a
 U
 %Repository/Models/Database/Subject.cs,1\d\1d7aeeda81577204e55588ba2c1602b289d83814
 T
@@ -59,8 +55,6 @@ a
 1Api/Repositories/Interfaces/ISubjectRepository.cs,1\6\1612a49d25fc411c68b59ddd2d9afd85119397b3
 \
 ,Api/Services/User/IApplicationUserService.cs,1\a\1af90745eed36a0e783833baf9f6779328bb3c2b
-[
-+Api/Services/User/ApplicationUserService.cs,3\a\3a6cd2a3e5c3dafcf82501f8f97982cafae1f9b7
 >
 Api/Program.cs,8\f\8f01855ccd40c02f5b70d757c19101d3f0413059
 ]
