@@ -15,20 +15,14 @@ G
 Api/AppConfiguration.cs,a\4\a4c79fba0398083ce2ac9ad7251c181928e59d1c
 T
 $Api/Controllers/TeacherController.cs,7\e\7ee16bb2140c07a05a0ecf140a361e7a4540e795
-L
-Api/Models/Enums/UserType.cs,c\e\ce3ae56034ce62b4f4f03e16075f9e0b0f86a073
 ^
 .Repository/Migrations/20230405224803_init12.cs,1\7\17b532a37179c0f09e657c9d8733a8485251f52d
 S
 #Api/Models/Auth/RegisterResponse.cs,0\1\01e20b00322bb8b5e5e02f57153621dc2118fce5
 Q
 !Api/Controllers/AuthController.cs,5\2\52f7573335182a0eda1007324ad2df3182941b19
-G
-Api/Models/BaseModel.cs,f\a\fa1e054de06f39565ff4b33ddf855bd196554a13
 U
 %Repository/Models/Database/Teacher.cs,5\a\5ae38e7a9089ca032275e8648d11c40e408355ae
-J
-Api/Models/StudentModel.cs,d\d\ddf39d6f3488e98fdd8dc50c51107ca502387e5c
 a
 1Api/Repositories/Interfaces/ISubjectRepository.cs,1\6\1612a49d25fc411c68b59ddd2d9afd85119397b3
 \
@@ -57,16 +51,8 @@ P
  Api/Services/Auth/AuthService.cs,a\e\ae57944b4a9c1a8ff6b64d4259cf8bb14ed85c0e
 V
 &Api/Services/Teacher/TeacherService.cs,8\a\8a8dba210415f79497cfa5b4641efc9b28c2c7e4
-P
- Api/Models/Register/Formulary.cs,b\7\b73144777475ff3d2dedbefcb43d81451e556087
 W
 'Api/Services/Teacher/ITeacherService.cs,8\b\8bed0498e1634b02bb92f675bb587531f4f5d6ff
-G
-Api/Models/UserModel.cs,9\e\9e95a464d4396d29c1cbf58b3919c2ed0572143e
-K
-Api/Models/UserTypeModel.cs,5\7\57af01494f513a108e87191d5446f9298ffedef9
-J
-Api/Models/TeacherModel.cs,8\d\8dfe1046812f38b2953f13357ed0ee05563b2588
 U
 %Api/Repositories/SubjectRepository.cs,7\8\786dc19a09d066ed7c2b2a5ed85c5d089b8a4ba6
 T
@@ -77,5 +63,3 @@ W
 'Api/Services/Subject/ISubjectService.cs,c\2\c26235c90cd2b54cb6cb5a46b135526e2deecb94
 b
 2Repository/Models/Database/User/ApplicationUser.cs,c\7\c7889e92696a505610bb971c39e4525318270f52
-J
-Api/Models/SubjectModel.cs,1\2\129c7034a07ce7de014c3f717c4c315734373f7c

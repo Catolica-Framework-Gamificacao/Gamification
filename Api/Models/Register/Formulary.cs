@@ -1,5 +1,6 @@
 ﻿using System.Net.Mail;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using Api.Models.Enums;
 
 namespace Api.Models.Register;
@@ -28,18 +29,9 @@ public class Formulary
 
     public bool EmailIsValid()
     {
-        var valid = true;
-            
-        try
-        { 
-            new MailAddress(this.Email);
-        }
-        catch
-        {
-            valid = false;
-        }
-
-        return valid;
+        var pattern = @"^(?!\.)[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$";
+        var regex = new Regex(pattern, RegexOptions.IgnoreCase);
+        return regex.IsMatch(Email);
     }
 
 }

@@ -30,7 +30,7 @@ public class UserTypeModel
         this.Type = type;
     }
 
-    private static UserType? GetUserTypeByLogical(int type)
+    public static UserType? GetUserTypeByLogical(int type)
     {
         UserType? userType = type switch
         {
