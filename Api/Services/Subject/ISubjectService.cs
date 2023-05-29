@@ -1,8 +1,8 @@
-﻿using Api.Models;
-
-namespace Api.Services.Subject;
+﻿namespace Api.Services.Subject;
 
 public interface ISubjectService
 {
-    public void Save(SubjectModel model);
+    public List<Repository.Models.Database.Subject> GetAll();
+    public Repository.Models.Database.Subject Save(Repository.Models.Database.Subject subject);
+    public void Delete(string uuid);
 }

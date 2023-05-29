@@ -1,5 +1,5 @@
-﻿using Api.Models;
-using Api.Repositories.Interfaces;
+﻿using Api.Repositories.Interfaces;
+using Repository.Database;
 
 namespace Api.Services.Student;
 
@@ -11,8 +11,18 @@ public class StudentService : IStudentService
     {
         _repository = repository;
     }
-    public List<StudentModel> RetriveAll()
+    public List<Repository.Models.Database.Student> RetriveAll()
     {
         return _repository.GetAll();
+    }
+
+    public Repository.Models.Database.Student Save(Repository.Models.Database.Student student)
+    {
+        return _repository.Save(student);
+    }
+
+    public Repository.Models.Database.Student Save(Repository.Models.Database.Student student, IGamificationContext context)
+    {
+        return _repository.Save(student, context);
     }
 }

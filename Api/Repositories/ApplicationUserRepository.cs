@@ -1,5 +1,4 @@
-﻿using Api.Models;
-using Api.Repositories.Interfaces;
+﻿using Api.Repositories.Interfaces;
 using Repository.Database;
 using Repository.Models.Database.User;
 
@@ -14,20 +13,15 @@ public class ApplicationUserRepository : IApplicationUserRepository
         _context = context;
     }
 
-    public void Save(UserModel user)
+    public ApplicationUser Save(ApplicationUser user)
     {
-        int type = UserTypeModel.GetLogicalByUserType(user.UserType.Type);
-        var applicationUser = new ApplicationUser
-        {
-            Email = user.Email,
-            Name = user.Name,
-            Password = user.Password,
-            Type = type,
-            UpdateDate = DateTime.UtcNow
-        };
+        return Save(user, _context);
+    }
 
-        _context.Users.Add(applicationUser);
-        _context.SaveChanges();
+    public ApplicationUser Save(ApplicationUser user, IGamificationContext context)
+    {
+        var entity = context.Users.Add(user).Entity;
+        return entity;
     }
 
     public Task<List<ApplicationUser>> GetAll()

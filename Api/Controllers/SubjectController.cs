@@ -27,14 +27,17 @@ public class SubjectController : ControllerBase
     [Route("all")]
     public ActionResult<SubjectModel> All()
     {
-        throw new NotImplementedException();
+        return Ok(_service.GetAll());
     }
     
     [HttpPost]
     [Route("new")]
-    public ActionResult<SubjectModel> New([FromBody] SubjectModel subject)
+    public ActionResult<SubjectModel> New([FromBody] SubjectModel model)
     {
-        throw new NotImplementedException();
+        var subject = model.ToEntity();
+        var entity = _service.Save(subject);
+        model = SubjectModel.Load(entity);
+        return Ok(model);
     }
     
     [HttpPut]
@@ -46,9 +49,10 @@ public class SubjectController : ControllerBase
     
     [HttpDelete]
     [Route("delete/{id}")]
-    public ActionResult<int> Delete([FromRoute] long id)
+    public ActionResult<string> Delete([FromRoute] string uuid)
     {
-        throw new NotImplementedException();
+        _service.Delete(uuid);
+        return Ok(uuid);
     }
     
     # region TEACHER

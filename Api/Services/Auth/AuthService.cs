@@ -3,33 +3,43 @@ using System.Security.Claims;
 using System.Text;
 using Api.Models;
 using Api.Models.Auth;
+using Api.Models.Enums;
 using Api.Models.Login;
 using Api.Models.Register;
-using Api.Repositories.Interfaces;
+using Api.Services.Student;
+using Api.Services.Teacher;
+using Api.Services.User;
 using Microsoft.IdentityModel.Tokens;
+using Repository.Database;
 
 namespace Api.Services.Auth;
 
 public class AuthService : IAuthService
 {
-    private readonly IApplicationUserRepository _repository;
+    private readonly IApplicationUserService _applicationUserService;
+    private readonly ITeacherService _teacherService;
+    private readonly IStudentService _studentService;
 
-    public AuthService(IApplicationUserRepository repository)
+    public AuthService(IApplicationUserService applicationUserService, ITeacherService teacherService, IStudentService studentService)
     {
-        _repository = repository;
+        _applicationUserService = applicationUserService;
+        _teacherService = teacherService;
+        _studentService = studentService;
     }
 
     public AuthenticationResponse Authenticate(Credential credential)
     {
-        var user = _repository.GetByKey(credential.Login, credential.Password);
+        var user = _applicationUserService.GetByKey(credential.Login, credential.Password);
         var userModel = new UserModel();
         var success = false;
         string? error = null;
+        string? token = null;
         
         if (user != null)
         {
             userModel = UserModel.LoadData(user);
-            userModel.Token = GenerateJwtToken(user.Email);
+            token = GenerateJwtToken(user.Email);
+            userModel.Token = token;
             success = true;
         }
         else
@@ -42,13 +52,15 @@ public class AuthService : IAuthService
         {
             User = userModel,
             Success = success,
-            Error = error
+            Error = error,
+            Token = token
         };
     }
 
     public RegisterResponse Register(Formulary formulary)
     {
-        var validateResponse  = ValidateFormulary(formulary);
+        var validateResponse = ValidateFormulary(formulary);
+        var message = "";
 
         if (validateResponse.HasCritics())
         {
@@ -59,22 +71,43 @@ public class AuthService : IAuthService
                 Message = validateResponse.Message
             };
         }
-    
-        var model = UserModel.FromFormulary(formulary);
-        _repository.Save(model);
 
+        var type = formulary.Type;
+        var model = UserModel.FromFormulary(formulary);
+        
+        using (var context = new GamificationContext())
+        {
+            var user = _applicationUserService.Save(model, context);
+            if (type.Equals(UserType.Student))
+            {
+                Repository.Models.Database.Student student = new(formulary.Ra, user);
+                _studentService.Save(student, context);
+                message = "The student has been successfully registered";
+            } else if (type.Equals(UserType.Teacher))
+            {
+                Repository.Models.Database.Teacher teacher = new(user);
+                _teacherService.Save(teacher, context);
+                message = "The teacher has been successfully registered";
+            }
+
+            model.UserType.UserId = user.Id;
+            context.SaveChanges();
+        }
+        
         return new RegisterResponse
         {
             User = model,
             Success = true,
-            Message = null
+            Message = message
         };
     }
 
     private FormularyValidateResponse ValidateFormulary(Formulary formulary)
     {
         var response = new FormularyValidateResponse();
-        
+
+        #region BASCIC FORMULARY VALIDATION
+
         var hasSomeMandatoryFieldEmpty = formulary.HasSomeMandatoryFieldEmpty();
         if (hasSomeMandatoryFieldEmpty)
         {
@@ -92,7 +125,7 @@ public class AuthService : IAuthService
 
         if (response.HasCritics()) return response;
         
-        var user = _repository.GetByKey(formulary.Email, formulary.Password);
+        var user = _applicationUserService.GetByKey(formulary.Email, formulary.Password);
         if (user != null)
         {
             response.Error = true;
@@ -102,6 +135,37 @@ public class AuthService : IAuthService
         {
             response.Valid = true;
         }
+        
+        if (response.HasCritics()) return response;
+
+        #endregion
+
+        var type = formulary.Type;
+
+        #region STUDENT VALIDATION
+
+        if (type.Equals(UserType.Student))
+        {
+            if (formulary.Ra.IsNullOrEmpty())
+            {
+                response.Error = true;
+                response.Message = "Field 'RA' is Mandatory";
+                response.Valid = false;
+            }
+
+            if (response.HasCritics()) return response;
+        }
+
+        #endregion
+        
+        #region TEACHER VALIDATION
+
+        if (type.Equals(UserType.Teacher))
+        {
+            
+        }
+
+        #endregion
 
         return response;
     }
